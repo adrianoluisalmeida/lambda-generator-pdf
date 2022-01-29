@@ -20,7 +20,6 @@ jobs:
       - run: node ./node_modules/serverless/bin/serverless.js plugin install -n serverless-bundle
       - run: node ./node_modules/serverless/bin/serverless.js config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - run: node ./node_modules/serverless/bin/serverless.js deploy --verbose
-        working-directory: /home/runner/work/ServerlessGeneratePdf/ServerlessGeneratePdf/
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
