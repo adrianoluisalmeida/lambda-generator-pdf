@@ -1,32 +1,24 @@
-name: serverless-deploy
 
-on:
-  push:
+  
+name: serverless-deploy
+on: 
+  push: 
     branches:
       - main
-
-jobs:
-  deploy:
-    name: deploy
+jobs: 
+  serverless-deploy-job: 
+    name: serverless-deploy
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - name: npm install serverless
-      run: npm install -g serverless
-    - name: serverless deploy
-      uses: serverless/github-action@master
-      with:
-        args: deploy --stage devel
-      env:
-        # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
-        # or if using AWS credentials directly
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps: 
+      - name: "[STEP] Checkout repository"
+        uses: actions/checkout@v2
+      - name: "[STEP] Install dependencies"
+        id: npm-install
+        run: npm install
+      - name: "[STEP] Configure AWS Credentials"
+        id: configure-credentials
+        # Replace {SERVICE_NAME_HERE} with the application namespace in the Github repository secrets panel.
+        run: npm run serverless-config -- --provider=aws --key=${{ secrets.AWS_ACCESS_KEY_ID }} --secret=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: "[STEP] Create Deployment"
+        id: create-deploy
+        run: npm run deplo
