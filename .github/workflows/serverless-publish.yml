@@ -31,7 +31,7 @@ jobs:
       - name: Deploy to WS
         uses: serverless/github-action@master
         with:
-          args: deploy --stage prd --region af-south-1
+          args: deploy --stage prd --region us-east-1
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
