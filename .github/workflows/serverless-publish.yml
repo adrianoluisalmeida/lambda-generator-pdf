@@ -19,6 +19,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
+    - name: npm install serverless
+        run: npm install -g serverless
     - name: serverless deploy
       uses: serverless/github-action@master
       with:
