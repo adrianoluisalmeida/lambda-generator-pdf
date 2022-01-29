@@ -1,24 +1,37 @@
-
-  
 name: serverless-deploy
-on: 
-  push: 
+
+on:
+  push:
     branches:
       - main
-jobs: 
-  serverless-deploy-job: 
-    name: serverless-deploy
+
+jobs:
+  deploy:
+    name: Build, test and deploy
     runs-on: ubuntu-latest
-    steps: 
-      - name: "[STEP] Checkout repository"
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: Check out Git repository
         uses: actions/checkout@v2
-      - name: "[STEP] Install dependencies"
-        id: npm-install
-        run: npm install
-      - name: "[STEP] Configure AWS Credentials"
-        id: configure-credentials
-        # Replace {SERVICE_NAME_HERE} with the application namespace in the Github repository secrets panel.
-        run: npm run serverless-config -- --provider=aws --key=${{ secrets.AWS_ACCESS_KEY_ID }} --secret=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: "[STEP] Create Deployment"
-        id: create-deploy
-        run: npm run deplo
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Unit testing
+        run: npm test
+
+      - name: Deploy to WS
+        uses: serverless/github-action@master
+        with:
+          args: deploy --stage prd --region af-south-1
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
