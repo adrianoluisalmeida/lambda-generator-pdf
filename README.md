@@ -5,12 +5,12 @@ Roda na AWS Lambda, utiliza dynamodb e armazena os arquivos no S3.
 
 ## Dependências
 
-- `yarn` para instalar dependências
-- `dynamodb:install` para instalar dynamodb local
+- `yarn or npm i` para instalar dependências
+- `yarn or npm dynamodb:install` para instalar dynamodb local
 
 ## Execução
-- `dynamodb:start` para rodar dynamodb local
-- `yarn dev` para rodar offline
+- `yarn or npm dynamodb:start` para rodar dynamodb local
+- `yarn or npm dev` para rodar offline
 
 ## Deploy
 - `serverless deploy` para executar o deploy
